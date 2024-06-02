@@ -36,6 +36,10 @@ const userSchema = new mongoose.Schema({
 
 const User = mongoose.model('user', userSchema);
 
+app.get('/',(req,res)=>{
+    res.status(200).json({message:'Hello from the server.'});
+});
+
 app.post('/register', async (req, res) => {
     const { username, password } = req.body;
     bcrypt.genSalt(12, (err, salt) => {
