@@ -12,61 +12,61 @@ app.use(bodyParser.urlencoded({
 app.use(bodyParser.json());
 app.use(cors());
 
-mongoose.connect(process.env.DATABASE).then(() => {
-    console.log('Mongodb connected!')
-}).catch((err) => {
-    console.error(err);
-});
+// mongoose.connect(process.env.DATABASE).then(() => {
+//     console.log('Mongodb connected!')
+// }).catch((err) => {
+//     console.error(err);
+// });
 
-const userSchema = new mongoose.Schema({
-    username: {
-        type: String,
-        unique: true,
-        required: true
-    },
-    password: {
-        type: String,
-        required: true
-    },
-    role: {
-        type: String,
-        required: true
-    },
-}, { timestamps: true });
+// const userSchema = new mongoose.Schema({
+//     username: {
+//         type: String,
+//         unique: true,
+//         required: true
+//     },
+//     password: {
+//         type: String,
+//         required: true
+//     },
+//     role: {
+//         type: String,
+//         required: true
+//     },
+// }, { timestamps: true });
 
-const User = mongoose.model('user', userSchema);
+// const User = mongoose.model('user', userSchema);
 
 app.get('/',(req,res)=>{
     res.status(200).json({message:'Hello from the server.'});
 });
 
-app.post('/register', async (req, res) => {
-    const { username, password } = req.body;
-    bcrypt.genSalt(12, (err, salt) => {
-        bcrypt.hash(password, salt, async(err, hash) => {
-            const newUser = new User({
-                username: username,
-                password: hash,
-                role: 'admin'
-            });
-            await newUser.save()
-        })
-    })
+// app.post('/register', async (req, res) => {
+//     const { username, password } = req.body;
+//     bcrypt.genSalt(12, (err, salt) => {
+//         bcrypt.hash(password, salt, async(err, hash) => {
+//             const newUser = new User({
+//                 username: username,
+//                 password: hash,
+//                 role: 'admin'
+//             });
+//             await newUser.save()
+//         })
+//     })
 
-    res.status(200).json(req.body);
-});
+//     res.status(200).json(req.body);
+// });
 
-app.post('/login',async(req,res)=>{
-    const {username,password} = req.body;
-    const user = await User.findOne({username: username});
-    bcrypt.compare(password,user.password,(err,result)=>{
-        if (result){
-            res.status(200).json(user);
-        }else{
-            res.status(404).json('Username or password is incorrect!');
-        }
-    })
-})
+// app.post('/login',async(req,res)=>{
+//     const {username,password} = req.body;
+//     const user = await User.findOne({username: username});
+//     bcrypt.compare(password,user.password,(err,result)=>{
+//         if (result){
+//             res.status(200).json(user);
+//         }else{
+//             res.status(404).json('Username or password is incorrect!');
+//         }
+//     })
+// })
 
 const PORT = 5000 ;
 app.listen(PORT, () => {
